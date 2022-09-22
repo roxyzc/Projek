@@ -1,0 +1,65 @@
+import { Schema, model, Document } from 'mongoose';
+import bcrypt from 'bcrypt';
+import 'dotenv/config';
+
+export interface IUser {
+    data: {
+        username: String;
+        password: String;
+        kelas: String;
+        email: String;
+    };
+    readonly role: string;
+    createdAt: Date;
+    updatedAt: Date;
+    comparePassword(candidatePassword: string): Promise<Boolean>;
+}
+
+export interface IUserModel extends IUser, Document {}
+
+const UserSchema: Schema = new Schema(
+    {
+        data: {
+            username: {
+                type: String,
+                required: true,
+                unique: true,
+                min: 6,
+                max: 12
+            },
+            email: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            password: {
+                type: String,
+                required: true,
+                min: 12,
+                max: 24
+            }
+        },
+        role: {
+            type: String,
+            default: undefined
+        }
+    },
+    { timestamps: true, versionKey: false }
+);
+
+UserSchema.pre('save', async function (this: IUserModel, next) {
+    if (!this.isModified('data')) {
+        return next();
+    }
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    const hash = await bcrypt.hash(this.data.password as string, salt);
+    this.data.password = hash;
+    return next();
+});
+
+UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<Boolean> {
+    const user = this as IUserModel;
+    return await bcrypt.compare(candidatePassword, user.data.password as string).catch(() => false);
+};
+
+export default model<IUserModel>('User', UserSchema);
