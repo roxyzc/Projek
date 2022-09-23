@@ -5,6 +5,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { errorHandler, notFound } from './middlewares/errorHandlers.middleware';
 import route from './routes/user.route';
+import { Logger } from './library/logging.library';
 import 'dotenv/config';
 
 const app: Application = express();
@@ -13,7 +14,11 @@ const app: Application = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
-app.use(cors());
+app.use(
+    cors({
+        origin: process.env.ORIGIN
+    })
+);
 
 // route
 app.use('/api', route);
@@ -24,5 +29,5 @@ app.use(errorHandler);
 
 app.listen(process.env.PORT as string, (): void => {
     connectToDatabase();
-    console.log(`Listen at port ${process.env.PORT as string} in mode: ${process.env.NODE_ENV as string}`);
+    Logger.info(`Listen at port ${process.env.PORT as string} in mode: ${process.env.NODE_ENV as string}`);
 });

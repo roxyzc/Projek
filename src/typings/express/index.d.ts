@@ -12,6 +12,7 @@ declare global {
             SALT: number;
             NODE_ENV: string;
             MONGODB_URL: string;
+            ORIGIN: string;
         }
     }
 }
