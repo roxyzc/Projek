@@ -1,5 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
+import { v4 } from 'uuid';
 import 'dotenv/config';
 
 export interface IUser {
@@ -19,11 +20,16 @@ export interface IUserModel extends IUser, Document {}
 
 const UserSchema: Schema = new Schema(
     {
+        _id: {
+            type: String,
+            default: function () {
+                return v4();
+            }
+        },
         data: {
             username: {
                 type: String,
                 required: true,
-                unique: true,
                 min: 6,
                 max: 12
             },
@@ -41,7 +47,10 @@ const UserSchema: Schema = new Schema(
         },
         role: {
             type: String,
-            default: undefined
+            enum: ['admin'],
+            default: function (this: IUser) {
+                return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? 'admin' : undefined;
+            }
         }
     },
     { timestamps: true, versionKey: false }

@@ -2,7 +2,11 @@ import { Response, Request } from 'express';
 import { Logger } from '../library/logging.library';
 import { createUser } from '../services/user.service';
 
-class User {
+interface IUser {
+    register(req: Request, res: Response): any;
+}
+
+class User implements IUser {
     public async register(req: Request, res: Response) {
         try {
             const user = await createUser(req.body);
