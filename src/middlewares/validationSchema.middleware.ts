@@ -40,17 +40,13 @@ export const schemas = {
             })
         }),
         login: Joi.object({
-            username: Joi.string().min(5).max(24).label('Username').required().messages({
-                'string.base': `{{#label}} should be a type of 'text'`,
+            email: Joi.string().email().label('Email').required().messages({
+                'string.email': `'{email}' in Email must be a valid {{#label}}`,
                 'string.empty': `{{#label}} cannot be an empty field`,
-                'string.min': `{{#label}} should have a minimum length of {#limit}`,
-                'string.max': `{{#label}} must be less than or equal to {#limit}`,
                 'any.required': `{{#label}} is a required field`
             }),
-            password: Joi.string().min(11).max(30).label('Password').required().messages({
+            password: Joi.string().label('Password').required().messages({
                 'string.empty': `{{#label}} cannot be an empty field`,
-                'string.min': `{{#label}} should have a minimum length of {#limit}`,
-                'string.max': `{{#label}} must be less than or equal to {#limit}`,
                 'any.required': `{{#label}} is a required field`
             })
         })

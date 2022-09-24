@@ -15,6 +15,7 @@ declare global {
             ORIGIN: string;
             USERNAME_ADMIN: string;
             PASSWORD_ADMIN: string;
+            SECRET: string;
         }
     }
 }
