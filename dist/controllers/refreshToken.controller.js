@@ -24,7 +24,6 @@ class Token {
                 jsonwebtoken_1.default.verify(user.token.refreshToken, process.env.REFRESHTOKEN_SECRET, (error, _decoded) => __awaiter(this, void 0, void 0, function* () {
                     if (error)
                         return res.sendStatus(403);
-                    console.log('masuk');
                     const { accessToken } = yield (0, token_util_1.refreshToken)(user);
                     user.token.accessToken = accessToken;
                     user.save();
