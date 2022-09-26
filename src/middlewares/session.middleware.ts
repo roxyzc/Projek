@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import MongoStore from 'connect-mongo';
 import session from 'express-session';
 
 const sessionMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -6,6 +7,9 @@ const sessionMiddleware = (req: Request, res: Response, next: NextFunction) => {
         secret: process.env.SECRET as string,
         resave: false,
         saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGODB_URL
+        }),
         cookie: {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'development' ? false : true,

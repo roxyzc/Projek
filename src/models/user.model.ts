@@ -10,7 +10,11 @@ export interface IUser {
         kelas: String;
         email: String;
     };
-    readonly role: string;
+    role: string;
+    token: {
+        accessToken: string;
+        refreshToken: string;
+    };
     createdAt: Date;
     updatedAt: Date;
     comparePassword(candidatePassword: string): Promise<Boolean>;
@@ -47,9 +51,21 @@ const UserSchema: Schema = new Schema(
         },
         role: {
             type: String,
-            enum: ['admin'],
+            enum: ['admin', 'guru'],
             default: function (this: IUser) {
-                return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? 'admin' : undefined;
+                return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? 'admin' : 'guru';
+            }
+        },
+        token: {
+            accessToken: {
+                type: String,
+                required: false,
+                default: undefined
+            },
+            refreshToken: {
+                type: String,
+                required: false,
+                default: undefined
             }
         }
     },

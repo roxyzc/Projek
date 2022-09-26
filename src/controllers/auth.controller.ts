@@ -5,6 +5,8 @@ import passport from 'passport';
 
 interface IAuth {
     register(req: Request, res: Response): any;
+    login(req: Request, res: Response, next: NextFunction): any;
+    logout(req: Request, res: Response): any;
 }
 
 class Auth implements IAuth {

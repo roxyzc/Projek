@@ -16,6 +16,7 @@ const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = require("passport-local");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const logging_library_1 = require("../library/logging.library");
+const token_util_1 = require("../utils/token.util");
 passport_1.default.use(new passport_local_1.Strategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -27,6 +28,8 @@ passport_1.default.use(new passport_local_1.Strategy({
         const valid = yield user.comparePassword(password);
         if (!valid)
             throw new Error('Password not match');
+        const { accessToken, refreshToken } = yield (0, token_util_1.generateAccessToken)(user);
+        Object.assign(user, { token: { accessToken, refreshToken } }).save();
         done(null, user);
     }
     catch (error) {

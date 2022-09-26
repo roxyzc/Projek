@@ -1,11 +1,6 @@
 export {};
 
 declare global {
-    namespace Express {
-        export interface Request {
-            user: string | any;
-        }
-    }
     namespace NodeJs {
         interface ProcessEnv {
             PORT: number;

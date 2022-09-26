@@ -44,9 +44,21 @@ const UserSchema = new mongoose_1.Schema({
     },
     role: {
         type: String,
-        enum: ['admin'],
+        enum: ['admin', 'guru'],
         default: function () {
-            return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? 'admin' : undefined;
+            return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? 'admin' : 'guru';
+        }
+    },
+    token: {
+        accessToken: {
+            type: String,
+            required: false,
+            default: undefined
+        },
+        refreshToken: {
+            type: String,
+            required: false,
+            default: undefined
         }
     }
 }, { timestamps: true, versionKey: false });
