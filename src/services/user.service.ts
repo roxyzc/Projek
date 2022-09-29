@@ -6,6 +6,7 @@ export const createUser = async ({ username, email, password }: { username: stri
         const user = await UserModel.findOne({ 'data.email': email });
         return user ? Promise.reject('Email is already in use by another user') : await UserModel.create({ data: { username: slug(username), email, password } });
     } catch (error: any) {
-        throw new Error(error);
+        if (!error.errors['data.kelas']) throw new Error(error);
+        throw new Error('kelas is a required');
     }
 };

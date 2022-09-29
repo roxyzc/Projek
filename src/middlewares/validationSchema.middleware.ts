@@ -25,7 +25,7 @@ export const schemas = {
                 'any.required': `{{#label}} is a required field`
             }),
             email: Joi.string().email().label('Email').required().messages({
-                'string.email': `'{email}' in Email must be a valid {{#label}}`,
+                'string.email': `'{{#label}}' in Email must be a valid {{#label}}`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'any.required': `{{#label}} is a required field`
             }),
@@ -34,6 +34,10 @@ export const schemas = {
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
                 'string.max': `{{#label}} must be less than or equal to {#limit}`,
                 'any.required': `{{#label}} is a required field`
+            }),
+            kelas: Joi.string().label('Kelas').messages({
+                'string.base': `{{#label}} should be a type of 'String'`,
+                'string.empty': `{{#label}} cannot be an empty field`
             }),
             confirmPassword: Joi.any().equal(Joi.ref('password')).required().label('Confirm password').messages({
                 'any.only': '{{#label}} does not match'

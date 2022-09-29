@@ -7,7 +7,7 @@ export interface IUser {
     data: {
         username: String;
         password: String;
-        kelas: String;
+        kelas?: String;
         email: String;
     };
     role: string;
@@ -47,6 +47,13 @@ const UserSchema: Schema = new Schema(
                 required: true,
                 min: 12,
                 max: 24
+            },
+            kelas: {
+                type: String,
+                required: function (this: IUser) {
+                    return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? false : true;
+                },
+                default: undefined
             }
         },
         role: {
