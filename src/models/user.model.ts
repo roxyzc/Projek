@@ -51,7 +51,10 @@ const UserSchema: Schema = new Schema(
             kelas: {
                 type: String,
                 required: function (this: IUser) {
-                    return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? false : true;
+                    return (this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN && this.data.email === process.env.EMAIL_ADMIN) ||
+                        this.role === 'admin'
+                        ? false
+                        : true;
                 },
                 default: undefined
             }
@@ -60,7 +63,7 @@ const UserSchema: Schema = new Schema(
             type: String,
             enum: ['admin', 'guru'],
             default: function (this: IUser) {
-                return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? 'admin' : 'guru';
+                return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN && this.data.email === process.env.EMAIL_ADMIN ? 'admin' : 'guru';
             }
         },
         token: {

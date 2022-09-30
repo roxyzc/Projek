@@ -35,8 +35,7 @@ class Auth implements IAuth {
     }
     public async logout(req: Request, res: Response) {
         try {
-            req.logOut((error) => {
-                if (error) throw new Error(error);
+            req.logOut((_error) => {
                 req.session.destroy((error) => {
                     if (error) throw new Error(error);
                     return res.status(204).end();

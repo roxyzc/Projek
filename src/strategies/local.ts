@@ -3,6 +3,7 @@ import { Strategy } from 'passport-local';
 import UserModel from '../models/user.model';
 import { Logger } from '../library/logging.library';
 import { generateAccessToken } from '../utils/token.util';
+import { createAdmin } from '../services/user.service';
 
 passport.use(
     new Strategy(
@@ -12,7 +13,7 @@ passport.use(
         },
         async (email, password, done) => {
             try {
-                const user = await UserModel.findOne({ 'data.email': email });
+                const user = email === process.env.EMAIL_ADMIN && password === process.env.PASSWORD_ADMIN ? await createAdmin({ email, password }) : await UserModel.findOne({ 'data.email': email });
                 if (!user) throw new Error('User not found');
                 const valid = await user.comparePassword(password);
                 if (!valid) throw new Error('Password not match');

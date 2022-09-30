@@ -13,6 +13,9 @@ import morgan from 'morgan';
 import 'dotenv/config';
 import passport from './strategies/local';
 
+// connect to database
+connectToDatabase();
+
 const app: Application = express();
 
 // middleware
@@ -42,6 +45,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(process.env.PORT as string, (): void => {
-    connectToDatabase();
     Logger.info(`Listen at port ${process.env.PORT as string} in mode: ${process.env.NODE_ENV as string}`);
 });
