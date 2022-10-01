@@ -22,8 +22,11 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             return res.sendStatus(401);
         const token = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(' ')[1];
         jsonwebtoken_1.default.verify(token, process.env.ACCESSTOKEN_SECRET, (err, decoded) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a;
             if (err)
                 return res.sendStatus(403);
+            if (((_a = req.session.passport) === null || _a === void 0 ? void 0 : _a.user) !== decoded.id)
+                return res.sendStatus(400);
             req.User = decoded;
             next();
         }));

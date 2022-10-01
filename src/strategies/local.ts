@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy } from 'passport-local';
 import UserModel from '../models/user.model';
 import { Logger } from '../library/logging.library';
-import { generateAccessToken } from '../utils/token.util';
+import { generateAccessToken, checkToken } from '../utils/token.util';
 import { createAdmin } from '../services/user.service';
 
 passport.use(
@@ -17,6 +17,8 @@ passport.use(
                 if (!user) throw new Error('User not found');
                 const valid = await user.comparePassword(password);
                 if (!valid) throw new Error('Password not match');
+                const checkAR = await checkToken(user.token.accessToken, user.token.refreshToken);
+                if (!checkAR) return done(null, user);
                 const { accessToken, refreshToken } = await generateAccessToken(user);
                 Object.assign(user, { token: { accessToken, refreshToken } }).save();
                 done(null, user);

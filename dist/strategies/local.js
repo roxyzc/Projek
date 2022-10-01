@@ -17,17 +17,21 @@ const passport_local_1 = require("passport-local");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const logging_library_1 = require("../library/logging.library");
 const token_util_1 = require("../utils/token.util");
+const user_service_1 = require("../services/user.service");
 passport_1.default.use(new passport_local_1.Strategy({
     usernameField: 'email',
     passwordField: 'password'
 }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield user_model_1.default.findOne({ 'data.email': email });
+        const user = email === process.env.EMAIL_ADMIN && password === process.env.PASSWORD_ADMIN ? yield (0, user_service_1.createAdmin)({ email, password }) : yield user_model_1.default.findOne({ 'data.email': email });
         if (!user)
             throw new Error('User not found');
         const valid = yield user.comparePassword(password);
         if (!valid)
             throw new Error('Password not match');
+        const checkAR = yield (0, token_util_1.checkToken)(user.token.accessToken, user.token.refreshToken);
+        if (!checkAR)
+            return done(null, user);
         const { accessToken, refreshToken } = yield (0, token_util_1.generateAccessToken)(user);
         Object.assign(user, { token: { accessToken, refreshToken } }).save();
         done(null, user);

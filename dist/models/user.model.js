@@ -40,13 +40,23 @@ const UserSchema = new mongoose_1.Schema({
             required: true,
             min: 12,
             max: 24
+        },
+        kelas: {
+            type: String,
+            required: function () {
+                return (this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN && this.data.email === process.env.EMAIL_ADMIN) ||
+                    this.role === 'admin'
+                    ? false
+                    : true;
+            },
+            default: undefined
         }
     },
     role: {
         type: String,
         enum: ['admin', 'guru'],
         default: function () {
-            return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN ? 'admin' : 'guru';
+            return this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN && this.data.email === process.env.EMAIL_ADMIN ? 'admin' : 'guru';
         }
     },
     token: {

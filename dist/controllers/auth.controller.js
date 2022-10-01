@@ -24,7 +24,7 @@ class Auth {
             }
             catch (error) {
                 logging_library_1.Logger.error(error);
-                res.status(500).json({ success: false, error });
+                res.status(500).json({ success: false, error: error.message });
             }
         });
     }
@@ -50,9 +50,7 @@ class Auth {
     logout(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                req.logOut((error) => {
-                    if (error)
-                        throw new Error(error);
+                req.logOut((_error) => {
                     req.session.destroy((error) => {
                         if (error)
                             throw new Error(error);

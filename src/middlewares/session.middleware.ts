@@ -12,8 +12,8 @@ const sessionMiddleware = (req: Request, res: Response, next: NextFunction) => {
         }),
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'development' ? false : true,
-            maxAge: 36000000
+            secure: process.env.NODE_ENV === 'development' ? false : true, // jika menggunakan http false jika https true
+            maxAge: 60 * 60 * 1000
         }
     })(req, res, next);
 };

@@ -39,7 +39,7 @@ exports.schemas = {
                 'any.required': `{{#label}} is a required field`
             }),
             email: joi_1.default.string().email().label('Email').required().messages({
-                'string.email': `'{email}' in Email must be a valid {{#label}}`,
+                'string.email': `'{{#label}}' in Email must be a valid {{#label}}`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'any.required': `{{#label}} is a required field`
             }),
@@ -47,6 +47,11 @@ exports.schemas = {
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
                 'string.max': `{{#label}} must be less than or equal to {#limit}`,
+                'any.required': `{{#label}} is a required field`
+            }),
+            kelas: joi_1.default.string().label('Kelas').required().messages({
+                'string.base': `{{#label}} should be a type of 'String'`,
+                'string.empty': `{{#label}} cannot be an empty field`,
                 'any.required': `{{#label}} is a required field`
             }),
             confirmPassword: joi_1.default.any().equal(joi_1.default.ref('password')).required().label('Confirm password').messages({
@@ -60,6 +65,26 @@ exports.schemas = {
                 'any.required': `{{#label}} is a required field`
             }),
             password: joi_1.default.string().label('Password').required().messages({
+                'string.empty': `{{#label}} cannot be an empty field`,
+                'any.required': `{{#label}} is a required field`
+            })
+        }),
+        update: joi_1.default.object({
+            username: joi_1.default.string().min(5).max(24).label('Username').required().messages({
+                'string.base': `{{#label}} should be a type of 'text'`,
+                'string.empty': `{{#label}} cannot be an empty field`,
+                'string.min': `{{#label}} should have a minimum length of {#limit}`,
+                'string.max': `{{#label}} must be less than or equal to {#limit}`,
+                'any.required': `{{#label}} is a required field`
+            }),
+            password: joi_1.default.string().min(11).max(30).label('Password').required().messages({
+                'string.empty': `{{#label}} cannot be an empty field`,
+                'string.min': `{{#label}} should have a minimum length of {#limit}`,
+                'string.max': `{{#label}} must be less than or equal to {#limit}`,
+                'any.required': `{{#label}} is a required field`
+            }),
+            kelas: joi_1.default.string().label('Kelas').required().messages({
+                'string.base': `{{#label}} should be a type of 'String'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'any.required': `{{#label}} is a required field`
             })

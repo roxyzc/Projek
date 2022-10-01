@@ -17,6 +17,8 @@ const session_middleware_1 = __importDefault(require("./middlewares/session.midd
 const morgan_1 = __importDefault(require("morgan"));
 require("dotenv/config");
 const local_1 = __importDefault(require("./strategies/local"));
+// connect to database
+(0, connectToDatabase_config_1.connectToDatabase)();
 const app = (0, express_1.default)();
 // middleware
 if (process.env.NODE_ENV === 'production')
@@ -40,6 +42,5 @@ app.use('/api/user', user_route_1.default);
 app.use(errorHandlers_middleware_1.notFound);
 app.use(errorHandlers_middleware_1.errorHandler);
 app.listen(process.env.PORT, () => {
-    (0, connectToDatabase_config_1.connectToDatabase)();
     logging_library_1.Logger.info(`Listen at port ${process.env.PORT} in mode: ${process.env.NODE_ENV}`);
 });

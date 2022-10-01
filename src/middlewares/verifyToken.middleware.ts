@@ -9,6 +9,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         const token = authHeader?.split(' ')[1];
         jwt.verify(token as string, process.env.ACCESSTOKEN_SECRET as string, async (err: any, decoded: any): Promise<any> => {
             if (err) return res.sendStatus(403);
+            if (req.session.passport?.user !== decoded.id) return res.sendStatus(400);
             req.User = decoded;
             next();
         });
