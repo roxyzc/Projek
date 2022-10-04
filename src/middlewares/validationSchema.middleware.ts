@@ -54,7 +54,9 @@ export const schemas = {
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'any.required': `{{#label}} is a required field`
             })
-        }),
+        })
+    },
+    User: {
         update: Joi.object({
             username: Joi.string().min(5).max(24).label('Username').required().messages({
                 'string.base': `{{#label}} should be a type of 'text'`,

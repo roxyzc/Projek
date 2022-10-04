@@ -11,13 +11,14 @@ export const refreshToken = ({ _id, role }: { _id: string; role: string }) => {
     return Promise.resolve({ accessToken });
 };
 
-export const checkToken = async (accessToken: string, refreshToken: string): Promise<any> => {
+export const checkToken = (accessToken: string, refreshToken: string): any => {
     if (accessToken === undefined && refreshToken === undefined) return true;
-    return jwt.verify(accessToken, process.env.ACCESSTOKEN_SECRET as string, async (error, _decoded): Promise<any> => {
+    const valid = jwt.verify(accessToken, process.env.ACCESSTOKEN_SECRET as string, (error, _decoded): any => {
         if (!error) return false;
-        jwt.verify(refreshToken, process.env.REFRESHTOKEN_SECRET as string, (error, _decoded) => {
+        jwt.verify(refreshToken, process.env.REFRESHTOKEN_SECRET as string, (error, _decoded): any => {
             if (!error) return false;
             return true;
         });
     });
+    return valid;
 };

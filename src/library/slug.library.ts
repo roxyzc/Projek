@@ -4,3 +4,7 @@ export const slug = (text: string) => {
         .replace(/ /g, '-')
         .replace(/[^\w-]+/g, '');
 };
+
+export const reverseSlug = (text: string) => {
+    return text.replace(/-/g, ' ');
+};

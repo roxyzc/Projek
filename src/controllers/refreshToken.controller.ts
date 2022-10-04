@@ -13,7 +13,7 @@ class Token implements IToken {
         try {
             const user: any = await UserModel.findOne({ 'token.accessToken': req.token });
             jwt.verify(user.token.refreshToken as string, process.env.REFRESHTOKEN_SECRET as string, async (error: any, _decoded: any): Promise<any> => {
-                if (error) return res.sendStatus(403);
+                if (!error) return res.sendStatus(403);
                 const { accessToken } = await refreshToken(user);
                 user.token.accessToken = accessToken;
                 user.save();
