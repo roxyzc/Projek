@@ -18,7 +18,6 @@ passport.use(
                 const valid = await user.comparePassword(password);
                 if (!valid) throw new Error('Password not match');
                 const checkAR = await checkToken(user.token.accessToken, user.token.refreshToken);
-                console.log('check ' + checkAR);
                 if (!checkAR) return done(null, user);
                 const { accessToken, refreshToken } = await generateAccessToken(user);
                 Object.assign(user, { token: { accessToken, refreshToken } }).save();

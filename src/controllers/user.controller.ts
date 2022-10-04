@@ -19,13 +19,27 @@ class User implements IUser {
         }
     }
 
-    public async findAllUser(_req: Request, res: Response): Promise<any> {
+    public async findUser(req: Request, res: Response): Promise<any> {
         try {
-            const user = await UserModel.find();
-            res.status(200).json({ success: true, user });
+            const users = req.query.kelas ? await UserModel.find({ 'data.kelas': req.query.kelas }, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1 }) : false;
+            if (!users) throw new Error('your query is required');
+            return res.status(200).json({ success: true, users });
         } catch (error: any) {
             Logger.error(error);
             res.status(500).json({ success: false, error: error.message });
+        }
+    }
+
+    public async findAllUser(req: Request, res: Response): Promise<any> {
+        try {
+            const query = req.query.new;
+            const users = query
+                ? await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1 }).sort({ createdAt: -1 }).limit(1)
+                : await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1 });
+            res.status(200).json({ success: true, users });
+        } catch (error) {
+            Logger.error(error);
+            res.status(500).json({ success: false, error });
         }
     }
 
@@ -55,7 +69,7 @@ class User implements IUser {
             if (password !== undefined) {
                 const valid = await user.comparePassword(password);
                 console.log(valid);
-                if (valid) throw new Error('Tolol password lu ngapain di ganti sama persis');
+                if (valid) throw new Error('Your password is the same as your old password');
                 user.data.password = password;
                 user.save();
             }
