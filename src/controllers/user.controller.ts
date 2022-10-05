@@ -24,7 +24,7 @@ class User implements IUser {
 
     public async findUser(req: Request, res: Response): Promise<any> {
         try {
-            const users = req.query.kelas ? await UserModel.find({ 'data.kelas': req.query.kelas }, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1 }) : false;
+            const users = req.query.kelas ? await UserModel.find({ 'data.kelas': req.query.kelas }, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1, role: 1 }) : false;
             if (!users) throw new Error('your query is required');
             return res.status(200).json({ success: true, users });
         } catch (error: any) {
@@ -37,8 +37,8 @@ class User implements IUser {
         try {
             const query = req.query.new;
             const users = query
-                ? await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1, 'data.password': 1 }).sort({ createdAt: -1 }).limit(Number(query))
-                : await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1 });
+                ? await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1, role: 1 }).sort({ createdAt: -1 }).limit(Number(query))
+                : await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1, role: 1 });
             res.status(200).json({ success: true, users });
         } catch (error) {
             Logger.error(error);
