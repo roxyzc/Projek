@@ -68,25 +68,27 @@ exports.schemas = {
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'any.required': `{{#label}} is a required field`
             })
-        }),
+        })
+    },
+    User: {
         update: joi_1.default.object({
-            username: joi_1.default.string().min(5).max(24).label('Username').required().messages({
+            username: joi_1.default.string().min(5).max(24).label('Username').messages({
                 'string.base': `{{#label}} should be a type of 'text'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
-                'string.max': `{{#label}} must be less than or equal to {#limit}`,
-                'any.required': `{{#label}} is a required field`
+                'string.max': `{{#label}} must be less than or equal to {#limit}`
             }),
-            password: joi_1.default.string().min(11).max(30).label('Password').required().messages({
+            password: joi_1.default.string().min(11).max(30).label('Password').messages({
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
-                'string.max': `{{#label}} must be less than or equal to {#limit}`,
-                'any.required': `{{#label}} is a required field`
+                'string.max': `{{#label}} must be less than or equal to {#limit}`
             }),
-            kelas: joi_1.default.string().label('Kelas').required().messages({
+            kelas: joi_1.default.string().trim().valid('TI.21.A.3', 'TI.21.A.2', 'TI.21.A.1').min(2).max(10).label('Kelas').messages({
                 'string.base': `{{#label}} should be a type of 'String'`,
+                'string.min': `{{#label}} should have a minimum length of {#limit}`,
+                'string.max': `{{#label}} must be less than or equal to {#limit}`,
                 'string.empty': `{{#label}} cannot be an empty field`,
-                'any.required': `{{#label}} is a required field`
+                'any.only': `{{#label}} {#value} is missing`
             })
         })
     }

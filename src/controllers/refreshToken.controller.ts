@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import UserModel from '../models/user.model';
 import jwt from 'jsonwebtoken';
-import { refreshToken } from '../utils/token.util';
+import { generateAccessToken, refreshToken } from '../utils/token.util';
 import { Logger } from '../library/logging.library';
 
 interface IToken {
@@ -13,7 +13,11 @@ class Token implements IToken {
         try {
             const user: any = await UserModel.findOne({ 'token.accessToken': req.token });
             jwt.verify(user.token.refreshToken as string, process.env.REFRESHTOKEN_SECRET as string, async (error: any, _decoded: any): Promise<any> => {
-                if (error) return res.sendStatus(403);
+                if (error) {
+                    const { accessToken, refreshToken } = await generateAccessToken(user);
+                    Object.assign(user, { token: { accessToken, refreshToken } }).save();
+                    return res.status(200).json({ success: true, accessToken, refreshToken });
+                }
                 const { accessToken } = await refreshToken(user);
                 user.token.accessToken = accessToken;
                 user.save();

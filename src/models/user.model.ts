@@ -50,6 +50,7 @@ const UserSchema: Schema = new Schema(
             },
             kelas: {
                 type: String,
+                enum: ['TI.21.A.1', 'TI.21.A.2', 'TI.21.A.3', undefined],
                 required: function (this: IUser) {
                     return (this.data.username === process.env.USERNAME_ADMIN && this.data.password === process.env.PASSWORD_ADMIN && this.data.email === process.env.EMAIL_ADMIN) ||
                         this.role === 'admin'
@@ -83,12 +84,13 @@ const UserSchema: Schema = new Schema(
 );
 
 UserSchema.pre('save', async function (this: IUserModel, next) {
-    if (!this.isModified('data')) {
+    if (!this.isModified('data.password')) {
         return next();
     }
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hash = await bcrypt.hash(this.data.password as string, salt);
     this.data.password = hash;
+    console.log(this.data.password);
     return next();
 });
 

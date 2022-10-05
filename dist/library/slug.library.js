@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.slug = void 0;
+exports.reverseSlug = exports.slug = void 0;
 const slug = (text) => {
     return text
         .toLowerCase()
@@ -8,3 +8,7 @@ const slug = (text) => {
         .replace(/[^\w-]+/g, '');
 };
 exports.slug = slug;
+const reverseSlug = (text) => {
+    return text.replace(/-/g, ' ');
+};
+exports.reverseSlug = reverseSlug;

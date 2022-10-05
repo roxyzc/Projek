@@ -22,8 +22,11 @@ class Token {
             try {
                 const user = yield user_model_1.default.findOne({ 'token.accessToken': req.token });
                 jsonwebtoken_1.default.verify(user.token.refreshToken, process.env.REFRESHTOKEN_SECRET, (error, _decoded) => __awaiter(this, void 0, void 0, function* () {
-                    if (error)
-                        return res.sendStatus(403);
+                    if (error) {
+                        const { accessToken, refreshToken } = yield (0, token_util_1.generateAccessToken)(user);
+                        Object.assign(user, { token: { accessToken, refreshToken } }).save();
+                        return res.status(200).json({ success: true, accessToken, refreshToken });
+                    }
                     const { accessToken } = yield (0, token_util_1.refreshToken)(user);
                     user.token.accessToken = accessToken;
                     user.save();

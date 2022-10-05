@@ -12,7 +12,7 @@ const token = new Token();
 route.get('/check', authLogin, verifyToken, user.check);
 route.get('/refreshToken', authLogin, checkExpired, token.refreshToken);
 route.delete('/delete/:id', authLogin, verifyTokenAndAuthorization, user.deleteUser);
-route.put('/update/:id', authLogin, validateSchema(schemas.User.update), verifyTokenAndAuthorization, user.updateUser);
+route.put('/update/:id', authLogin, verifyTokenAndAuthorization, validateSchema(schemas.User.update), user.updateUser);
 route.get('/find', authLogin, verifyToken, user.findUser);
 route.get('/findAllUser', authLogin, verifyTokenAdmin, user.findAllUser);
 

@@ -16,14 +16,10 @@ exports.createAdmin = exports.createUser = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const slug_library_1 = require("../library/slug.library");
 const createUser = ({ username, email, password, kelas }) => __awaiter(void 0, void 0, void 0, function* () {
-    // try {
     const user = yield user_model_1.default.findOne({ 'data.email': email });
     if (!user)
         return yield user_model_1.default.create({ data: { username: (0, slug_library_1.slug)(username), email, password, kelas } });
     throw new Error('Email is already in use by another user');
-    // } catch (error: any) {
-    //     throw new Error(error);
-    // }
 });
 exports.createUser = createUser;
 const createAdmin = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {

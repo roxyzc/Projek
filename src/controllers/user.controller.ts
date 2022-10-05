@@ -5,8 +5,11 @@ import { slug } from '../library/slug.library';
 
 interface IUser {
     check(req: Request, res: Response): any;
+    findUser(req: Request, res: Response): any;
+    findAllUser(req: Request, res: Response): any;
     deleteUser(req: Request, res: Response): any;
-    // updateUser(req: Request, res: Response): any;
+    deleteUser(req: Request, res: Response): any;
+    updateUser(req: Request, res: Response): any;
 }
 
 class User implements IUser {
@@ -34,7 +37,7 @@ class User implements IUser {
         try {
             const query = req.query.new;
             const users = query
-                ? await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1 }).sort({ createdAt: -1 }).limit(1)
+                ? await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1, 'data.password': 1 }).sort({ createdAt: -1 }).limit(Number(query))
                 : await UserModel.find({}, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1 });
             res.status(200).json({ success: true, users });
         } catch (error) {
@@ -64,23 +67,16 @@ class User implements IUser {
     public async updateUser(req: Request, res: Response): Promise<any> {
         try {
             const { username, password, kelas } = req.body;
-            const user: any = await UserModel.findById(req.params.id);
+            const user: any = await UserModel.findOne({ $and: [{ _id: req.params.id }, { username }] });
             if (!user || user.role === 'admin') return res.sendStatus(400);
             if (password !== undefined) {
                 const valid = await user.comparePassword(password);
-                console.log(valid);
                 if (valid) throw new Error('Your password is the same as your old password');
                 user.data.password = password;
-                user.save();
             }
-            await UserModel.findByIdAndUpdate(
-                req.params.id,
-                {
-                    'data.username': slug(username),
-                    'data.kelas': kelas
-                },
-                { new: true }
-            );
+            if (username !== undefined) user.data.username = slug(username);
+            if (kelas !== undefined) user.data.kelas = kelas;
+            user.save();
             return res.sendStatus(200);
         } catch (error: any) {
             Logger.error(error);
