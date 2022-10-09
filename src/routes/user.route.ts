@@ -10,10 +10,11 @@ const user = new User();
 const token = new Token();
 
 route.get('/check', authLogin, verifyToken, user.check);
-route.get('/refreshToken', authLogin, checkExpired, token.refreshToken);
+route.get('/refreshtoken', authLogin, checkExpired, token.refreshToken);
 route.delete('/delete/:id', authLogin, verifyTokenAndAuthorization, user.deleteUser);
 route.put('/update/:id', authLogin, verifyTokenAndAuthorization, validateSchema(schemas.User.update), user.updateUser);
 route.get('/find', authLogin, verifyToken, user.findUser);
-route.get('/findAllUser', authLogin, verifyTokenAdmin, user.findAllUser);
+route.get('/findalluser', authLogin, verifyTokenAdmin, user.findAllUser);
+route.post('/violation', authLogin, verifyTokenAdmin, validateSchema(schemas.User.violation), user.createViolationSiswa);
 
 export default route;

@@ -5,11 +5,11 @@ import { Logger } from '../library/logging.library';
 export const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
         const authHeader = req.headers['authorization'];
-        if (!authHeader) return res.sendStatus(401);
+        if (!authHeader) return res.status(401).json({ success: false, message: 'Invalid token' });
         const token = authHeader?.split(' ')[1];
         jwt.verify(token as string, process.env.ACCESSTOKEN_SECRET as string, async (err: any, decoded: any): Promise<any> => {
-            if (err) return res.sendStatus(403);
-            if (req.session.passport?.user !== decoded.id) return res.sendStatus(400);
+            if (err) return res.status(403).json({ success: false, message: 'Your token has expired' });
+            if (req.session.passport?.user !== decoded.id) return res.status(400).json({ success: false, message: 'Bad request' });
             req.User = decoded;
             next();
         });
@@ -46,10 +46,10 @@ export const verifyTokenAdmin = (req: Request, res: Response, next: NextFunction
 export const checkExpired = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
         const authHeader = req.headers['authorization'];
-        if (!authHeader) return res.sendStatus(401);
+        if (!authHeader) return res.status(401).json({ success: false, message: 'Invalid token' });
         const token = authHeader?.split(' ')[1];
         jwt.verify(token as string, process.env.ACCESSTOKEN_SECRET as string, async (err: any, _decoded: any): Promise<any> => {
-            if (!err) return res.sendStatus(400);
+            if (!err) return res.status(403).json({ success: false, message: 'Your token has not expired' });
             req.token = token;
             next();
         });

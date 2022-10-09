@@ -16,21 +16,23 @@ class Auth implements IAuth {
             res.status(200).json({ success: true, message: 'account created successfully', user });
         } catch (error: any) {
             Logger.error(error);
-            res.status(500).json({ success: false, error: error.message });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
     public async login(req: Request, res: Response, next: NextFunction) {
         try {
             passport.authenticate('local', async (error, user, _info): Promise<any> => {
-                if (error) return res.status(400).json({ success: false, error });
+                if (error) return res.status(400).json({ success: false, message: error });
                 req.login(user, (error) => {
                     if (error) throw new Error(error);
-                    return res.status(200).json({ success: true, message: 'Login successfully', user });
+                    const { password, ...others } = user._doc.data;
+                    const { accessToken, refreshToken } = user._doc.token;
+                    return res.status(200).json({ success: true, message: 'Login successfully', user: others, token: { accessToken, refreshToken } });
                 });
             })(req, res, next);
         } catch (error) {
             Logger.error(error);
-            res.status(500).json({ success: false, error });
+            res.status(500).json({ success: false, message: error });
         }
     }
     public async logout(req: Request, res: Response) {
@@ -43,7 +45,7 @@ class Auth implements IAuth {
             });
         } catch (error) {
             Logger.error(error);
-            res.status(500).json({ success: false, error });
+            res.status(500).json({ success: false, message: error });
         }
     }
 }

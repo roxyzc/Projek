@@ -90,7 +90,6 @@ UserSchema.pre('save', async function (this: IUserModel, next) {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hash = await bcrypt.hash(this.data.password as string, salt);
     this.data.password = hash;
-    console.log(this.data.password);
     return next();
 });
 

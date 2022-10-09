@@ -1,12 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
 export const authLogin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    console.log(req.isAuthenticated());
     if (req.isAuthenticated()) return next();
-    return res.sendStatus(400);
+    return res.status(400).json({ success: false, message: 'Please login first' });
 };
-
-// export const authLogin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-//     console.log(req.session.passport?.user);
-//     return res.sendStatus(400);
-// };
