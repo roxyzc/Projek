@@ -39,7 +39,7 @@ class User implements IUser {
             const user: any = await UserModel.findById(req.session.passport?.user);
             if (!user) throw new Error('User not found');
             const users = user.data.kelas
-                ? await SiswaModel.find({ 'data.kelas': user.data.kelas }, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ updatedAt: -1 })
+                ? await SiswaModel.find({ 'data.kelas': user.data.kelas }, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ updatedAt: -1 }).limit(10)
                 : false;
             if (!users) throw new Error("you can't access this");
             res.status(200).json({ success: true, users });
