@@ -25,9 +25,12 @@ class Auth implements IAuth {
                 if (error) return res.status(400).json({ success: false, message: error });
                 req.login(user, (error) => {
                     if (error) throw new Error(error);
-                    const { password, ...others } = user._doc.data;
-                    const { accessToken, refreshToken } = user._doc.token;
-                    return res.status(200).json({ success: true, message: 'Login successfully', user: others, token: { accessToken, refreshToken } });
+                    const {
+                        data: { password, ...others },
+                        role,
+                        token: { ...token }
+                    } = user._doc;
+                    return res.status(200).json({ success: true, message: 'Login successfully', user: others, role, token });
                 });
             })(req, res, next);
         } catch (error) {

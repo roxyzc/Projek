@@ -38,7 +38,9 @@ class User implements IUser {
         try {
             const user: any = await UserModel.findById(req.session.passport?.user);
             if (!user) throw new Error('User not found');
-            const users = user.data.kelas ? await SiswaModel.find({ 'data.kelas': user.data.kelas }, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }) : false;
+            const users = user.data.kelas
+                ? await SiswaModel.find({ 'data.kelas': user.data.kelas }, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ updatedAt: -1 })
+                : false;
             if (!users) throw new Error("you can't access this");
             res.status(200).json({ success: true, users });
         } catch (error: any) {
@@ -80,6 +82,7 @@ class User implements IUser {
             res.status(500).json({ success: false, message: error });
         }
     }
+
     public async updateUser(req: Request, res: Response): Promise<any> {
         try {
             const { username, password, kelas } = req.body;
