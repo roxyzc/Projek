@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
-import { v4 } from 'uuid';
+// import { v4 } from 'uuid';
 import 'dotenv/config';
 
 export interface ISiswa {
@@ -22,12 +22,12 @@ export interface ISiswaModel extends ISiswa, Document {}
 
 const SiswaSchema: Schema = new Schema(
     {
-        _id: {
-            type: String,
-            default: function () {
-                return v4();
-            }
-        },
+        // _id: {
+        //     type: String,
+        //     default: function () {
+        //         return v4();
+        //     }
+        // },
         data: {
             username: {
                 type: String,

@@ -49,7 +49,7 @@ class User implements IUser {
         }
     }
 
-    public async findAllUser(req: Request, res: Response): Promise<any> {
+    public async findAllUser(req: Request, res: Response) {
         try {
             const users = req.query.new
                 ? await UserModel.find({ role: 'guru' }, { 'data.username': 1, 'data.email': 1, 'data.kelas': 1, role: 1 }).sort({ createdAt: -1 }).limit(Number(req.query.new))
@@ -58,9 +58,9 @@ class User implements IUser {
                 ? await SiswaModel.find({}, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ createdAt: -1 }).limit(Number(req.query.new))
                 : await SiswaModel.find({}, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 });
             res.status(200).json({ success: true, users: { guru: users, siswa } });
-        } catch (error) {
+        } catch (error: any) {
             Logger.error(error);
-            res.status(500).json({ success: false, message: error });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -77,9 +77,9 @@ class User implements IUser {
                 });
             }
             return res.status(200).json({ success: true, message: 'delete account successfully' });
-        } catch (error) {
+        } catch (error: any) {
             Logger.error(error);
-            res.status(500).json({ success: false, message: error });
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 
@@ -97,6 +97,21 @@ class User implements IUser {
             if (kelas !== undefined) user.data.kelas = kelas;
             user.save();
             return res.status(200).json({ success: true, message: 'Update user successfully' });
+        } catch (error: any) {
+            Logger.error(error);
+            res.status(500).json({ success: false, message: error.message });
+        }
+    }
+
+    public async deleteSiswa(req: Request, res: Response): Promise<any> {
+        try {
+            const user = await UserModel.findById(req.session.passport?.user);
+            if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+            const siswa = await SiswaModel.findById(req.params.id);
+            if (!siswa) return res.status(400).json({ success: false, message: 'Siswa not found' });
+            if (user?.data.kelas !== siswa?.data.kelas && user.role !== 'admin') return res.status(400).json({ success: false, message: "you can't access this" });
+            await siswa?.delete();
+            return res.status(200).json({ success: true, message: 'delete siswa successfully' });
         } catch (error: any) {
             Logger.error(error);
             res.status(500).json({ success: false, message: error.message });

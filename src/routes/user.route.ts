@@ -16,5 +16,6 @@ route.put('/update/:id', authLogin, verifyTokenAndAuthorization, validateSchema(
 route.get('/find', authLogin, verifyToken, user.findUser);
 route.get('/findalluser', authLogin, verifyTokenAdmin, user.findAllUser);
 route.post('/violation', authLogin, verifyTokenAdmin, validateSchema(schemas.User.violation), user.createViolationSiswa);
+route.delete('/deletesiswa/:id', authLogin, verifyToken, user.deleteSiswa);
 
 export default route;

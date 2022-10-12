@@ -11,13 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authLogin = void 0;
 const authLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.isAuthenticated());
     if (req.isAuthenticated())
         return next();
-    return res.sendStatus(400);
+    return res.status(400).json({ success: false, message: 'Please login first' });
 });
 exports.authLogin = authLogin;
-// export const authLogin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-//     console.log(req.session.passport?.user);
-//     return res.sendStatus(400);
-// };

@@ -5,7 +5,7 @@ const slug = (text) => {
     return text
         .toLowerCase()
         .replace(/ /g, '-')
-        .replace(/[^\w-]+/g, '');
+        .replace(/[^\w-.]+/g, '');
 };
 exports.slug = slug;
 const reverseSlug = (text) => {

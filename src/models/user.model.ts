@@ -1,6 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { v4 } from 'uuid';
+// import { v4 } from 'uuid';
 import 'dotenv/config';
 
 export interface IUser {
@@ -24,12 +24,12 @@ export interface IUserModel extends IUser, Document {}
 
 const UserSchema: Schema = new Schema(
     {
-        _id: {
-            type: String,
-            default: function () {
-                return v4();
-            }
-        },
+        // _id: {
+        //     type: String,
+        //     default: function () {
+        //         return v4();
+        //     }
+        // },
         data: {
             username: {
                 type: String,

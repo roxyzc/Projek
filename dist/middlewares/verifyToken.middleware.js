@@ -19,14 +19,14 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         const authHeader = req.headers['authorization'];
         if (!authHeader)
-            return res.sendStatus(401);
+            return res.status(401).json({ success: false, message: 'Invalid token' });
         const token = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(' ')[1];
         jsonwebtoken_1.default.verify(token, process.env.ACCESSTOKEN_SECRET, (err, decoded) => __awaiter(void 0, void 0, void 0, function* () {
             var _a;
             if (err)
-                return res.sendStatus(403);
+                return res.status(403).json({ success: false, message: 'Your token has expired' });
             if (((_a = req.session.passport) === null || _a === void 0 ? void 0 : _a.user) !== decoded.id)
-                return res.sendStatus(400);
+                return res.status(400).json({ success: false, message: 'Bad request' });
             req.User = decoded;
             next();
         }));
@@ -69,11 +69,11 @@ const checkExpired = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     try {
         const authHeader = req.headers['authorization'];
         if (!authHeader)
-            return res.sendStatus(401);
+            return res.status(401).json({ success: false, message: 'Invalid token' });
         const token = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(' ')[1];
         jsonwebtoken_1.default.verify(token, process.env.ACCESSTOKEN_SECRET, (err, _decoded) => __awaiter(void 0, void 0, void 0, function* () {
             if (!err)
-                return res.sendStatus(400);
+                return res.status(403).json({ success: false, message: 'Your token has not expired' });
             req.token = token;
             next();
         }));

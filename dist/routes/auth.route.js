@@ -8,9 +8,10 @@ const auth_controller_1 = __importDefault(require("../controllers/auth.controlle
 const validationSchema_middleware_1 = require("../middlewares/validationSchema.middleware");
 const verifyToken_middleware_1 = require("../middlewares/verifyToken.middleware");
 const auth_middlewares_1 = require("../middlewares/auth.middlewares");
+const limiter_middleware_1 = require("../middlewares/limiter.middleware");
 const route = (0, express_1.Router)();
 const auth = new auth_controller_1.default();
 route.post('/register', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyTokenAdmin, (0, validationSchema_middleware_1.validateSchema)(validationSchema_middleware_1.schemas.Auth.register), auth.register);
-route.post('/login', (0, validationSchema_middleware_1.validateSchema)(validationSchema_middleware_1.schemas.Auth.login), auth.login);
-route.delete('/logout', auth_middlewares_1.authLogin, auth.logout);
+route.post('/login', limiter_middleware_1.loginAccountLimiter, (0, validationSchema_middleware_1.validateSchema)(validationSchema_middleware_1.schemas.Auth.login), auth.login);
+route.delete('/logout', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyToken, auth.logout);
 exports.default = route;
