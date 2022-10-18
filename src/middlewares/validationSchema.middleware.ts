@@ -17,7 +17,7 @@ export const validateSchema = (schema: ObjectSchema) => {
 export const schemas = {
     Auth: {
         register: Joi.object({
-            username: Joi.string().min(5).max(24).label('Username').required().messages({
+            username: Joi.string().trim().min(5).max(24).label('Username').required().messages({
                 'string.base': `{{#label}} should be a type of 'text'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
@@ -65,7 +65,7 @@ export const schemas = {
     },
     User: {
         update: Joi.object({
-            username: Joi.string().min(5).max(24).label('Username').messages({
+            username: Joi.string().trim().min(5).max(24).label('Username').messages({
                 'string.base': `{{#label}} should be a type of 'text'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
@@ -92,7 +92,7 @@ export const schemas = {
                 })
         }),
         violation: Joi.object({
-            username: Joi.string().min(5).max(24).label('Username').messages({
+            username: Joi.string().trim().min(5).max(24).label('Username').messages({
                 'string.base': `{{#label}} should be a type of 'text'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,

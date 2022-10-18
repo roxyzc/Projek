@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { errorHandler, notFound } from './middlewares/errorHandlers.middleware';
 import routeAuth from './routes/auth.route';
 import routeUser from './routes/user.route';
+import routeSiswa from './routes/siswa.route';
 import { Logger } from './library/logging.library';
 import cookieParser from 'cookie-parser';
 import sessionMiddleware from './middlewares/session.middleware';
@@ -39,6 +40,7 @@ app.use(passport.session());
 // route
 app.use('/api', routeAuth);
 app.use('/api/user', routeUser);
+app.use('/api/user', routeSiswa);
 
 // errors handler
 app.use(notFound);
