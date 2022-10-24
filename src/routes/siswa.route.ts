@@ -13,5 +13,6 @@ route.post('/violation', authLogin, verifyTokenAdmin, validateSchema(schemas.Use
 route.delete('/deletesiswa/:id', authLogin, verifyToken, siswa.deleteSiswa);
 route.get('/stat', authLogin, verifyToken, siswa.findStat);
 route.get('/ranksiswa', authLogin, verifyToken, siswa.findRank);
+// route.get('/filterAlphabet', authLogin, verifyToken, siswa.filterUserAlfabet);
 
 export default route;

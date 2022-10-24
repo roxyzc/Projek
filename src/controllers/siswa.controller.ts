@@ -39,15 +39,36 @@ class Siswa implements ISiswa {
         }
     }
 
-    public async findAllSiswa(req: Request, res: Response) {
+    // public async filterUserAlfabet(_req: Request, res: Response) {
+    //     try {
+    //         const users = await SiswaModel.find({}, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ 'data.username': -1 }).limit(10);
+    //         res.status(200).json({ success: true, users });
+    //     } catch (error: any) {
+    //         Logger.error(error);
+    //         res.status(500).json({ success: false, message: error.message });
+    //     }
+    // }
+
+    public async findAllSiswa(req: Request, res: Response): Promise<any> {
         try {
-            const siswa = req.query.new
-                ? await SiswaModel.find({}, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ createdAt: -1 }).limit(Number(req.query.new))
+            const { querynew, alfabet } = req.query;
+            if (((querynew !== undefined || null) && (alfabet !== undefined || null)) || (!querynew && (alfabet !== undefined || null))) {
+                const siswa = !querynew
+                    ? await SiswaModel.find({ 'data.username': { $regex: alfabet as string, $options: 'i' } }, { 'data.username': 1, 'data.kelas': 1, 'data.amount': 1, _id: 0 }).sort({
+                          'data.username': 1
+                      })
+                    : await SiswaModel.find({ 'data.username': { $regex: alfabet as string, $options: 'i' } }, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1, _id: 0 })
+                          .sort({ 'data.username': 1 })
+                          .limit(Number(querynew));
+                return res.status(200).json({ success: true, siswa });
+            }
+            const siswa = querynew
+                ? await SiswaModel.find({}, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ createdAt: -1 }).limit(Number(querynew))
                 : await SiswaModel.find({}, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 });
-            res.status(200).json({ success: true, siswa });
+            return res.status(200).json({ success: true, siswa });
         } catch (error: any) {
             Logger.error(error);
-            res.status(500).json({ success: false, message: error.message });
+            return res.status(500).json({ success: false, message: error.message });
         }
     }
 

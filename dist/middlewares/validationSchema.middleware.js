@@ -31,7 +31,7 @@ exports.validateSchema = validateSchema;
 exports.schemas = {
     Auth: {
         register: joi_1.default.object({
-            username: joi_1.default.string().min(5).max(24).label('Username').required().messages({
+            username: joi_1.default.string().trim().min(5).max(24).label('Username').required().messages({
                 'string.base': `{{#label}} should be a type of 'text'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
@@ -79,7 +79,7 @@ exports.schemas = {
     },
     User: {
         update: joi_1.default.object({
-            username: joi_1.default.string().min(5).max(24).label('Username').messages({
+            username: joi_1.default.string().trim().min(5).max(24).label('Username').messages({
                 'string.base': `{{#label}} should be a type of 'text'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,
@@ -106,7 +106,7 @@ exports.schemas = {
             })
         }),
         violation: joi_1.default.object({
-            username: joi_1.default.string().min(5).max(24).label('Username').messages({
+            username: joi_1.default.string().trim().min(5).max(24).label('Username').messages({
                 'string.base': `{{#label}} should be a type of 'text'`,
                 'string.empty': `{{#label}} cannot be an empty field`,
                 'string.min': `{{#label}} should have a minimum length of {#limit}`,

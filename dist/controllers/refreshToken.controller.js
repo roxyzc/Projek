@@ -21,6 +21,8 @@ class Token {
         this.refreshToken = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = yield user_model_1.default.findOne({ 'token.accessToken': req.token });
+                if (!user)
+                    return res.status(400).json({ success: false, message: 'your token is wrong' });
                 jsonwebtoken_1.default.verify(user.token.refreshToken, process.env.REFRESHTOKEN_SECRET, (error, _decoded) => __awaiter(this, void 0, void 0, function* () {
                     if (error) {
                         const { accessToken, refreshToken } = yield (0, token_util_1.generateAccessToken)(user);

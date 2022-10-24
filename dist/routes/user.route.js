@@ -12,12 +12,8 @@ const validationSchema_middleware_1 = require("../middlewares/validationSchema.m
 const route = (0, express_1.Router)();
 const user = new user_controller_1.default();
 const token = new refreshToken_controller_1.default();
-route.get('/check', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyToken, user.check);
 route.get('/refreshtoken', auth_middlewares_1.authLogin, verifyToken_middleware_1.checkExpired, token.refreshToken);
 route.delete('/delete/:id', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyTokenAndAuthorization, user.deleteUser);
 route.put('/update/:id', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyTokenAndAuthorization, (0, validationSchema_middleware_1.validateSchema)(validationSchema_middleware_1.schemas.User.update), user.updateUser);
-route.get('/find', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyToken, user.findUser);
 route.get('/findalluser', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyTokenAdmin, user.findAllUser);
-route.post('/violation', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyTokenAdmin, (0, validationSchema_middleware_1.validateSchema)(validationSchema_middleware_1.schemas.User.violation), user.createViolationSiswa);
-route.delete('/deletesiswa/:id', auth_middlewares_1.authLogin, verifyToken_middleware_1.verifyToken, user.deleteSiswa);
 exports.default = route;

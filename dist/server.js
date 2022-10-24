@@ -11,6 +11,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const errorHandlers_middleware_1 = require("./middlewares/errorHandlers.middleware");
 const auth_route_1 = __importDefault(require("./routes/auth.route"));
 const user_route_1 = __importDefault(require("./routes/user.route"));
+const siswa_route_1 = __importDefault(require("./routes/siswa.route"));
 const logging_library_1 = require("./library/logging.library");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const session_middleware_1 = __importDefault(require("./middlewares/session.middleware"));
@@ -38,6 +39,7 @@ app.use(local_1.default.session());
 // route
 app.use('/api', auth_route_1.default);
 app.use('/api/user', user_route_1.default);
+app.use('/api/user', siswa_route_1.default);
 // errors handler
 app.use(errorHandlers_middleware_1.notFound);
 app.use(errorHandlers_middleware_1.errorHandler);
