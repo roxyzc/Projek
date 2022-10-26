@@ -29,3 +29,7 @@ const createAdmin = ({ email, password }) => __awaiter(void 0, void 0, void 0, f
     return user;
 });
 exports.createAdmin = createAdmin;
+// export const findUser = async (id: string): Promise<any> => {
+//     const user = await UserModel.findOne({ $or: [{ 'token.accessToken': id }, { _id: id }] }).select('_id');
+//     return !user ? false : true;
+// };

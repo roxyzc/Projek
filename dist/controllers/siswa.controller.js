@@ -31,10 +31,9 @@ class Siswa {
         });
     }
     findSiswa(req, res) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield user_model_1.default.findById((_a = req.session.passport) === null || _a === void 0 ? void 0 : _a.user);
+                const user = yield user_model_1.default.findById(req.User.id);
                 if (!user)
                     throw new Error('User not found');
                 const users = user.data.kelas

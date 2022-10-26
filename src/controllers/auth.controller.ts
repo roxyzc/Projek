@@ -42,8 +42,12 @@ class Auth implements IAuth {
     public async logout(req: Request, res: Response) {
         try {
             req.logOut((_error) => {
+                // const user = await findUser(req.User.id);
+                // console.log(user);
+                // Object.assign(user, { token: { accessToken: undefined, refreshToken: undefined } }).save();
                 req.session.destroy((error) => {
                     if (error) throw new Error(error);
+                    req.sessionStore.destroy(req.sessionID);
                     return res.status(204).end();
                 });
             });

@@ -26,7 +26,7 @@ class Siswa implements ISiswa {
 
     public async findSiswa(req: Request, res: Response) {
         try {
-            const user: any = await UserModel.findById(req.session.passport?.user);
+            const user: any = await UserModel.findById(req.User.id);
             if (!user) throw new Error('User not found');
             const users = user.data.kelas
                 ? await SiswaModel.find({ 'data.kelas': user.data.kelas }, { 'data.username': 1, 'data.kelas': 1, 'data.violation': 1, 'data.amount': 1 }).sort({ updatedAt: -1 }).limit(10)

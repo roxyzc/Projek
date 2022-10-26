@@ -63,6 +63,9 @@ class Auth {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 req.logOut((_error) => {
+                    // const user = await findUser(req.User.id);
+                    // console.log(user);
+                    // Object.assign(user, { token: { accessToken: undefined, refreshToken: undefined } }).save();
                     req.session.destroy((error) => {
                         if (error)
                             throw new Error(error);
