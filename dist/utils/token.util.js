@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkToken = exports.refreshToken = exports.generateAccessToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const generateAccessToken = ({ _id, role }) => {
-    const accessToken = jsonwebtoken_1.default.sign({ id: _id, role }, process.env.ACCESSTOKEN_SECRET, { expiresIn: '15m' });
-    const refreshToken = jsonwebtoken_1.default.sign({ id: _id, role }, process.env.REFRESHTOKEN_SECRET, { expiresIn: '3h' });
+    const accessToken = jsonwebtoken_1.default.sign({ id: _id, role }, process.env.ACCESSTOKEN_SECRET, { expiresIn: '5m' });
+    const refreshToken = jsonwebtoken_1.default.sign({ id: _id, role }, process.env.REFRESHTOKEN_SECRET, { expiresIn: '15m' });
     return Promise.resolve({ accessToken, refreshToken });
 };
 exports.generateAccessToken = generateAccessToken;
 const refreshToken = ({ _id, role }) => {
-    const accessToken = jsonwebtoken_1.default.sign({ id: _id, role }, process.env.ACCESSTOKEN_SECRET, { expiresIn: '1h' });
+    const accessToken = jsonwebtoken_1.default.sign({ id: _id, role }, process.env.ACCESSTOKEN_SECRET, { expiresIn: '5m' });
     return Promise.resolve({ accessToken });
 };
 exports.refreshToken = refreshToken;
