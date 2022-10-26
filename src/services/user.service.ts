@@ -12,3 +12,8 @@ export const createAdmin = async ({ email, password }: { email: string; password
     if (!user) return await UserModel.create({ data: { username: process.env.USERNAME_ADMIN, email, password } });
     return user;
 };
+
+export const findUser = async (id: string): Promise<any> => {
+    const user = await UserModel.findById(id).select('_id');
+    return user;
+};

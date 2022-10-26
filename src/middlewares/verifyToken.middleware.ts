@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { Logger } from '../library/logging.library';
+// import { findUser } from '../services/user.service';
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
@@ -9,6 +10,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         const token = authHeader?.split(' ')[1];
         jwt.verify(token as string, process.env.ACCESSTOKEN_SECRET as string, async (err: any, decoded: any): Promise<any> => {
             if (err) return res.status(403).json({ success: false, message: 'invalid token' });
+            // const user = await findUser(decoded.id);
             if (req.session.passport?.user !== decoded.id) return res.status(400).json({ success: false, message: 'Bad request' });
             req.User = decoded;
             next();
