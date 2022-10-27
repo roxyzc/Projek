@@ -14,9 +14,10 @@ const sessionMiddleware = (req, res, next) => {
             mongoUrl: process.env.MONGODB_URL
         }),
         cookie: {
-            httpOnly: true,
-            // secure: true,
-            secure: process.env.NODE_ENV === 'development' ? false : true,
+            // httpOnly: true,
+            httpOnly: false,
+            secure: false,
+            // secure: process.env.NODE_ENV === 'development' ? false : true, // jika menggunakan http false jika https true
             maxAge: 60 * 60 * 1000
         }
     })(req, res, next);

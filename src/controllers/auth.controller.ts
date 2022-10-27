@@ -47,7 +47,7 @@ class Auth implements IAuth {
                 // Object.assign(user, { token: { accessToken: undefined, refreshToken: undefined } }).save();
                 req.session.destroy((error) => {
                     if (error) throw new Error(error);
-                    req.sessionStore.destroy(req.sessionID);
+                    // req.sessionStore.destroy(req.sessionID);
                     return res.status(204).end();
                 });
             });

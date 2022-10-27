@@ -69,6 +69,7 @@ class Auth {
                     req.session.destroy((error) => {
                         if (error)
                             throw new Error(error);
+                        // req.sessionStore.destroy(req.sessionID);
                         return res.status(204).end();
                     });
                 });

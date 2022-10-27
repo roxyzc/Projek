@@ -22,9 +22,11 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             return res.status(401).json({ success: false, message: 'Invalid token' });
         const token = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(' ')[1];
         jsonwebtoken_1.default.verify(token, process.env.ACCESSTOKEN_SECRET, (err, decoded) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a;
             if (err)
-                return res.status(403).json({ success: false, message: 'invalid token' });
-            // if (req.session.passport?.user !== decoded.id) return res.status(400).json({ success: false, message: 'Bad request' });
+                return res.status(401).json({ success: false, message: 'Invalid token' });
+            if (((_a = req.session.passport) === null || _a === void 0 ? void 0 : _a.user) !== decoded.id)
+                return res.status(400).json({ success: false, message: 'Bad request' });
             req.User = decoded;
             next();
         }));
