@@ -48,6 +48,7 @@ class Auth {
                     req.login(user, (error) => {
                         if (error)
                             throw new Error(error);
+                        res.cookie('login', true, { maxAge: 360000 });
                         const _a = user._doc, _b = _a.data, { password } = _b, others = __rest(_b, ["password"]), { role, _id } = _a, token = __rest(_a.token, []);
                         return res.status(200).json({ success: true, message: 'Login successfully', user: others, _id, role, token });
                     });
@@ -69,6 +70,7 @@ class Auth {
                     req.session.destroy((error) => {
                         if (error)
                             throw new Error(error);
+                        res.clearCookie('login');
                         // req.sessionStore.destroy(req.sessionID);
                         return res.status(204).end();
                     });

@@ -25,6 +25,7 @@ class Auth implements IAuth {
                 if (error) return res.status(400).json({ success: false, message: error });
                 req.login(user, (error) => {
                     if (error) throw new Error(error);
+                    res.cookie('login', true, { maxAge: 360000 });
                     const {
                         data: { password, ...others },
                         role,
@@ -47,6 +48,7 @@ class Auth implements IAuth {
                 // Object.assign(user, { token: { accessToken: undefined, refreshToken: undefined } }).save();
                 req.session.destroy((error) => {
                     if (error) throw new Error(error);
+                    res.clearCookie('login');
                     // req.sessionStore.destroy(req.sessionID);
                     return res.status(204).end();
                 });
