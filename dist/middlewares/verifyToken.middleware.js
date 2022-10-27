@@ -24,9 +24,6 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         jsonwebtoken_1.default.verify(token, process.env.ACCESSTOKEN_SECRET, (err, decoded) => __awaiter(void 0, void 0, void 0, function* () {
             if (err)
                 return res.status(403).json({ success: false, message: 'Invalid token' });
-            console.log(req.cookies['login']);
-            if (!req.cookies['login'] || req.cookies['login'] === undefined)
-                return res.status(400).json({ success: false, message: 'Bad request' });
             req.User = decoded;
             next();
         }));
